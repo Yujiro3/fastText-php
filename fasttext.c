@@ -31,20 +31,20 @@ PHP_INI_END()
    purposes. */
 
 /* {{{ arginfo */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_fasttext_predict, 0, 0, 2)
-	ZEND_ARG_INFO(0, modelpath)
-	ZEND_ARG_INFO(0, word)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_fasttext_predict, 0, ZEND_RETURN_VALUE, 2)
+	ZEND_ARG_INFO(1, modelpath)
+	ZEND_ARG_INFO(1, word)
 	ZEND_ARG_INFO(0, k)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_fasttext_vectors, 0, 0, 2)
-	ZEND_ARG_INFO(0, modelpath)
-	ZEND_ARG_INFO(0, word)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_fasttext_vectors, 0, ZEND_RETURN_VALUE, 2)
+	ZEND_ARG_INFO(1, modelpath)
+	ZEND_ARG_INFO(1, word)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_fasttext_test, 0, 0, 2)
-	ZEND_ARG_INFO(0, modelpath)
-	ZEND_ARG_INFO(0, word)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_fasttext_test, 0, ZEND_RETURN_VALUE, 2)
+	ZEND_ARG_INFO(1, modelpath)
+	ZEND_ARG_INFO(1, word)
 	ZEND_ARG_INFO(0, k)
 ZEND_END_ARG_INFO()
 /* }}} */
@@ -73,19 +73,19 @@ PHP_FUNCTION(confirm_fasttext_compiled)
 PHP_FUNCTION(fasttext_predict)
 {
 	char *modelpath = NULL, *word = NULL;
-	size_t modelpath_len, word_len, len;
-	int k = 1;
+	size_t modelpath_len, word_len;
+	zend_long k = 1;
 	char result[1024];
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss|l", &modelpath, &modelpath_len, &word, &word_len, &k) == FAILURE) {
 		return;
 	}
 
-	if (!FastTextPredict(modelpath, word, k, result)) {
+	if (!FastTextPredict(modelpath, word, (int32_t)k, result)) {
 		RETURN_FALSE;
 	}
 
-	RETURN_STRING((char *)result);
+	RETURN_STRING(result);
 }
 /* }}} */
 
@@ -94,19 +94,19 @@ PHP_FUNCTION(fasttext_predict)
 PHP_FUNCTION(fasttext_predictprob)
 {
 	char *modelpath = NULL, *word = NULL;
-	size_t modelpath_len, word_len, len;
-	int k = 1;
+	size_t modelpath_len, word_len;
+	zend_long k = 1;
 	char result[1024];
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss|l", &modelpath, &modelpath_len, &word, &word_len, &k) == FAILURE) {
 		return;
 	}
 
-	if (!FastTextPredictProb(modelpath, word, k, result)) {
+	if (!FastTextPredictProb(modelpath, word, (int32_t)k, result)) {
 		RETURN_FALSE;
 	}
 
-	RETURN_STRING((char *)result);
+	RETURN_STRING(result);
 }
 /* }}} */
 
@@ -116,7 +116,7 @@ PHP_FUNCTION(fasttext_predictprob)
 PHP_FUNCTION(fasttext_word_vectors)
 {
 	char *modelpath = NULL, *word = NULL;
-	size_t modelpath_len, word_len, len;
+	size_t modelpath_len, word_len;
 	char result[1024];
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss", &modelpath, &modelpath_len, &word, &word_len) == FAILURE) {
@@ -127,7 +127,7 @@ PHP_FUNCTION(fasttext_word_vectors)
 		RETURN_FALSE;
 	}
 
-	RETURN_STRING((char *)result);
+	RETURN_STRING(result);
 }
 /* }}} */
 
@@ -137,7 +137,7 @@ PHP_FUNCTION(fasttext_word_vectors)
 PHP_FUNCTION(fasttext_sentence_vectors)
 {
 	char *modelpath = NULL, *word = NULL;
-	size_t modelpath_len, word_len, len;
+	size_t modelpath_len, word_len;
 	char result[1024];
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss", &modelpath, &modelpath_len, &word, &word_len) == FAILURE) {
@@ -148,7 +148,7 @@ PHP_FUNCTION(fasttext_sentence_vectors)
 		RETURN_FALSE;
 	}
 
-	RETURN_STRING((char *)result);
+	RETURN_STRING(result);
 }
 /* }}} */
 
@@ -158,19 +158,19 @@ PHP_FUNCTION(fasttext_sentence_vectors)
 PHP_FUNCTION(fasttext_test)
 {
 	char *modelpath = NULL, *word = NULL;
-	size_t modelpath_len, word_len, len;
-	int k = 1;
+	size_t modelpath_len, word_len;
+	zend_long k = 1;
 	char result[1024];
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss|l", &modelpath, &modelpath_len, &word, &word_len, &k) == FAILURE) {
 		return;
 	}
 
-	if (!FastTextTest(modelpath, word, k, result)) {
+	if (!FastTextTest(modelpath, word, (int32_t)k, result)) {
 		RETURN_FALSE;
 	}
 
-	RETURN_STRING((char *)result);
+	RETURN_STRING(result);
 }
 /* }}} */
 
